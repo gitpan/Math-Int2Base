@@ -1,0 +1,7 @@
+Revision history for Perl extension Math::Int2Base.
+
+0.01  Thu Mar 13 16:45:39 2008
+    - original version; created by h2xs 1.23 with options
+      -AX --skip-exporter --use-new-tests -n Math::Int2Base
+    - 203 tests
+
