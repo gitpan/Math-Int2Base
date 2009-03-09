@@ -1,5 +1,9 @@
 Revision history for Perl extension Math::Int2Base.
 
+0.02  Mon Mar  9 14:24:43 EDT 2009
+    - doc/test patch for Math::BigInt examples
+      rt.cpan.org #43852: Should use Math::BigInt (thanks!)
+
 0.01  Thu Mar 13 16:45:39 2008
     - original version; created by h2xs 1.23 with options
       -AX --skip-exporter --use-new-tests -n Math::Int2Base

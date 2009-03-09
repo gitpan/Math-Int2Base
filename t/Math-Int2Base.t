@@ -23,26 +23,37 @@ BEGIN { use_ok('Math::Int2Base') };
   my $hex = int2base( 255,  $base );  # FF
   my $dec = base2int( $hex, $base );  # 255
 
-  my $base62 = int2base( 10**100, 62 );  # QCyvrY2M...(55 digits)
-  my $decnum = base2int( $base62, 62 );  # 1e+100 (googol)
-
   my $sixdig = int2base( 100, 36, 6  ); # 00002S
   my $decno  = base2int( $sixdig, 36 ); # 100, i.e., leading zeros no problem
 
   my $chars = base_chars( 24 );  # 0123...KLMN
   my $regex = qr/^[$chars]$/;    # used as character class
 
+  use Math::BigInt;  # if needed
+  my $googol = Math::BigInt->new("1e+100");
+  my $base62 = int2base( $googol, 62 );  # QCyvrY2MJnQFGlUHTCA95Xz8AHOrLuoIO0fuPkHHCcyXy9ytM5N1lqsa
+  my $bigint = Math::BigInt->new( base2int( $base62, 62 ) );  # back to 1e+100
+
+  # from one base to another (via base-10)
+  sub base_convert {
+      my( $num, $from_base, $to_base ) = @_;
+      return int2base( base2int( $num, $from_base ), $to_base );
+  }
+
     is( $hex, 'FF', '255 to hex' );
     is( $dec,  255, 'FF hex to decimal' );
-
-    is( $base62, 'QCyvrY2MMYIe4QMw6CueWuuaI4MOW4cA2aaaQk8qQYO6M8CEEUWEIGyA', '10**100 to base-62' );
-    is( $decnum, 1e+100,                                     '10**100 to base-62 back to base-10'  );
 
     is( $sixdig, '00002S', '100 to base-36' );
     is( $decno,       100, '00002S/base-36 to base-10' );
 
     is( $chars, '0123456789ABCDEFGHIJKLMN',              'base_chars( 24 )'   );
     is( $regex, '(?-xism:^[0123456789ABCDEFGHIJKLMN]$)', 'as character class' );
+
+    is( $base62, 'QCyvrY2MJnQFGlUHTCA95Xz8AHOrLuoIO0fuPkHHCcyXy9ytM5N1lqsa', '10**100 to base-62' );
+    is( $bigint, "1"."0"x100,                               '10**100 to base-62 back to base-10'  );
+    is( $bigint, $googol,                                   '10**100 to base-62 back to base-10'  );
+
+    is( base_convert( "ZAQFG", 36, 16 ), int2base( 59287372, 16 ), 'base_convert() example' );
 
 }
 

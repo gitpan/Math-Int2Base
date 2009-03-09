@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 require Exporter;
 use base qw(Exporter);
@@ -82,14 +82,22 @@ to decimal.
   my $hex = int2base( 255,  $base );  # FF
   my $dec = base2int( $hex, $base );  # 255
 
-  my $base62 = int2base( 10**100, 62 );  # QCyvrY2M...(55 digits)
-  my $decnum = base2int( $base62, 62 );  # 1e+100 (googol)
-
   my $sixdig = int2base( 100, 36, 6  ); # 00002S
   my $decno  = base2int( $sixdig, 36 ); # 100, i.e., leading zeros no problem
 
   my $chars = base_chars( 24 );  # 0123...KLMN
   my $regex = qr/^[$chars]$/;    # used as character class
+
+  use Math::BigInt;  # if needed
+  my $googol = Math::BigInt->new("1e+100");
+  my $base62 = int2base( $googol, 62 );  # QCyvrY2MJnQFGlUHTCA95Xz8AHOrLuoIO0fuPkHHCcyXy9ytM5N1lqsa
+  my $bigint = Math::BigInt->new( base2int( $base62, 62 ) );  # back to 1e+100
+
+  # from one base to another (via base-10)
+  sub base_convert {
+      my( $num, $from_base, $to_base ) = @_;
+      return int2base( base2int( $num, $from_base ), $to_base );
+  }
 
 =head1 DESCRIPTION
 
@@ -124,8 +132,8 @@ Only supports positive integers.
 
 =item
 
-Does not support flexible case letters, e.g., in hexidecimal, F == f.
-In Math::Int2Base, f is not a hex digit, and A/base-16 == A/base=36 == A/base-62.
+Does not support flexible case letters, e.g., in hexidecimal, C<F> == C<f>.
+In Math::Int2Base, C<f> is not a hex digit, and C<A>(base-16) == C<A>(base-36) == C<A>(base-62).
 
 =back
 
@@ -135,7 +143,7 @@ http://en.wikipedia.org/wiki/Category:Positional_numeral_systems
 Math::BaseCnv
 Math::BaseCalc
 
-Code based on newgroup discussion
+The code is based on newsgroup discussion
 http://groups.google.com/group/comp.lang.perl.misc/browse_thread/thread/3f3b416e3a79fd2/d2f62e10c837e782
 particularly that of Dr. Ruud. Errors are my own.
 
@@ -145,7 +153,7 @@ Brad Baxter, E<lt>bmb@libs.uga.eduE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2008 by Brad Baxter
+Copyright (C) 2008, 2009 by Brad Baxter
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.6 or,
