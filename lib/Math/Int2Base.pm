@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 require Exporter;
 use base qw(Exporter);
@@ -88,10 +88,10 @@ to decimal.
   my $chars = base_chars( 24 );  # 0123...KLMN
   my $regex = qr/^[$chars]$/;    # used as character class
 
-  use Math::BigInt;  # if needed
-  my $googol = Math::BigInt->new("1e+100");
+  use bigint;  # if needed
+  my $googol = 10**100;
   my $base62 = int2base( $googol, 62 );  # QCyvrY2MJnQFGlUHTCA95Xz8AHOrLuoIO0fuPkHHCcyXy9ytM5N1lqsa
-  my $bigint = Math::BigInt->new( base2int( $base62, 62 ) );  # back to 1e+100
+  my $bigint = base2int( $base62, 62 );  # back to 1e+100
 
   # from one base to another (via base-10)
   sub base_convert {
@@ -102,13 +102,25 @@ to decimal.
 =head1 DESCRIPTION
 
 Math::Int2Base provides
-C<int2base( $int, $base, $minlen )>
-for converting from decimal to another number base,
-C<base2int( $num, $base )>
-for converting from another base to decimal, and
-C<base_chars( $base )>
-for retrieving the string of characters used to represent digits
-in a number base.
+
+=over
+
+=item
+
+C<int2base( $int, $base, $minlen )> for converting from decimal to
+another number base,
+
+=item
+
+C<base2int( $num, $base )> for converting from another base to decimal,
+and
+
+=item
+
+C<base_chars( $base )> for retrieving the string of characters used to
+represent digits in a number base.
+
+=back
 
 This module only works with positive integers.
 Fractions are silently truncated to integers.
@@ -133,7 +145,9 @@ Only supports positive integers.
 =item
 
 Does not support flexible case letters, e.g., in hexidecimal, C<F> == C<f>.
-In Math::Int2Base, C<f> is not a hex digit, and C<A>(base-16) == C<A>(base-36) == C<A>(base-62).
+
+In Math::Int2Base, C<f> is not a hex digit, and
+C<A>(base-16) == C<A>(base-36) == C<A>(base-62).
 
 =back
 

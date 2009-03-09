@@ -29,10 +29,10 @@ BEGIN { use_ok('Math::Int2Base') };
   my $chars = base_chars( 24 );  # 0123...KLMN
   my $regex = qr/^[$chars]$/;    # used as character class
 
-  use Math::BigInt;  # if needed
-  my $googol = Math::BigInt->new("1e+100");
+  use bigint;  # if needed
+  my $googol = 10**100;
   my $base62 = int2base( $googol, 62 );  # QCyvrY2MJnQFGlUHTCA95Xz8AHOrLuoIO0fuPkHHCcyXy9ytM5N1lqsa
-  my $bigint = Math::BigInt->new( base2int( $base62, 62 ) );  # back to 1e+100
+  my $bigint = base2int( $base62, 62 );  # back to 1e+100
 
   # from one base to another (via base-10)
   sub base_convert {
@@ -51,7 +51,7 @@ BEGIN { use_ok('Math::Int2Base') };
 
     is( $base62, 'QCyvrY2MJnQFGlUHTCA95Xz8AHOrLuoIO0fuPkHHCcyXy9ytM5N1lqsa', '10**100 to base-62' );
     is( $bigint, "1"."0"x100,                               '10**100 to base-62 back to base-10'  );
-    is( $bigint, $googol,                                   '10**100 to base-62 back to base-10'  );
+    isnt( $bigint, $googol+99,                              '10**100 to base-62 back to base-10'  );
 
     is( base_convert( "ZAQFG", 36, 16 ), int2base( 59287372, 16 ), 'base_convert() example' );
 
