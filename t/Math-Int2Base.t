@@ -47,7 +47,6 @@ BEGIN { use_ok('Math::Int2Base') };
     is( $decno,       100, '00002S/base-36 to base-10' );
 
     is( $chars, '0123456789ABCDEFGHIJKLMN',              'base_chars( 24 )'   );
-    is( $regex, '(?-xism:^[0123456789ABCDEFGHIJKLMN]$)', 'as character class' );
 
     is( $base62, 'QCyvrY2MJnQFGlUHTCA95Xz8AHOrLuoIO0fuPkHHCcyXy9ytM5N1lqsa', '10**100 to base-62' );
     is( $bigint, "1"."0"x100,                               '10**100 to base-62 back to base-10'  );

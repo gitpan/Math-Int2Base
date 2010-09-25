@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 require Exporter;
 use base qw(Exporter);
@@ -163,11 +163,11 @@ particularly that of Dr. Ruud. Errors are my own.
 
 =head1 AUTHOR
 
-Brad Baxter, E<lt>bmb@libs.uga.eduE<gt>
+Brad Baxter, E<lt>bbaxter@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2008, 2009 by Brad Baxter
+Copyright (C) 2010 by Brad Baxter
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.6 or,
