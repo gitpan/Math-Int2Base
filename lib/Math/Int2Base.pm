@@ -5,16 +5,16 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = '0.04';
+our $VERSION = '1.00';
 
 require Exporter;
 use base qw(Exporter);
 
 our @EXPORT_OK = qw( int2base base2int base_chars ); 
 
-use constant Chars   => ('0'..'9', 'A'..'Z', 'a'..'z');
-use constant MaxBase => scalar Chars;
-use constant CharStr => join '', Chars;
+my @Chars   = ('0'..'9', 'A'..'Z', 'a'..'z');
+my $MaxBase = scalar @Chars;
+my $CharStr = join '', @Chars;
 
 #---------------------------------------------------------------------
 # int2base( $num, $base, $minlen );  # base ||= 10 minlen ||= 1
@@ -25,15 +25,15 @@ sub int2base {
     $base   ||= 10;
     $minlen ||= 1;
 
-    if( $num       < 0
-        || $base   < 2
-        || MaxBase < $base
-        || $minlen < 1
+    if( $num        < 0
+        || $base    < 2
+        || $MaxBase < $base
+        || $minlen  < 1
         # || $num    != int( $num )  # XXX[1] do we care?
         ) {
         croak "not supported: int2base( '$num', $base, $minlen )" }
 
-    for (; $num; $num = int($num/$base) ) { $ret .= (Chars)[$num % $base] }
+    for (; $num; $num = int($num/$base) ) { $ret .= $Chars[$num % $base] }
     return scalar reverse $ret . '0'x($minlen - length($ret));
 }
 
@@ -44,16 +44,16 @@ sub base2int {
     my( $ret, $num, $base ) = ( 0, @_ );
     $num    ||= 0;
     $base   ||= 10;
-    my $chars = substr CharStr, 0, $base;
+    my $chars = substr $CharStr, 0, $base;
 
     if( $num       !~ /^[$chars]+$/
-        || $base   <  2
-        || MaxBase <  $base         ) {
+        || $base    <  2
+        || $MaxBase <  $base         ) {
         croak "not supported: base2int( '$num', $base )" }
 
     $num =~ s/^0+//;  # trim leading zeros
     for( my $i = length($num)-1, my $c = 0; $i >= 0; --$i ) {
-        $ret += index(CharStr, substr($num, $i, 1)) * $base**$c++ }
+        $ret += index($CharStr, substr($num, $i, 1)) * $base**$c++ }
     return $ret;
 } 
 
@@ -62,7 +62,7 @@ sub base2int {
 sub base_chars {
     my( $base ) = @_;
     $base ||= 10;
-    return substr CharStr, 0, $base;
+    return substr $CharStr, 0, $base;
 } 
 
 1;

@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Math-Int2Base
-version:            0.04
+version:            1.00
 abstract:           Perl extension for converting decimal (base-10)
 author:
     - Brad Baxter <bmb@galib.uga.edu>
